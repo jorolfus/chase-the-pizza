@@ -1,17 +1,24 @@
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Food, function (sprite, otherSprite) {
+    sprite.destroy()
+    info.changeLifeBy(1)
+    info.changeScoreBy(1)
+    otherSprite.setPosition(randint(0, 160), randint(0, 120))
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     otherSprite.setPosition(randint(0, 160), randint(0, 120))
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if(controller.dx() == 0 && controller.dy() == 0) return
-
+    if (controller.dx() == 0 && controller.dy() == 0) {
+        return
+    }
     shot = sprites.createProjectileFromSprite(img`
         . . . . . 
         . . 9 . . 
         . 9 9 9 . 
         . . 9 . . 
         . . . . . 
-        `, p, controller.dx() * 20, controller.dy() * 20)
+        `, p, controller.dx() * 100, controller.dy() * 100)
 })
 let shot: Sprite = null
 let p: Sprite = null
@@ -63,8 +70,3 @@ let piza = sprites.create(img`
     4 4 4 4 . . . . . . . . . . . . 
     `, SpriteKind.Food)
 piza.setPosition(30, 60)
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Food, function (sprite, otherSprite) {
-    info.changeLifeBy(1)
-    info.changeScoreBy(1)
-    otherSprite.setPosition(randint(0, 160), randint(0, 120))
-})
