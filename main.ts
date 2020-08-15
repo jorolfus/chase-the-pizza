@@ -1,9 +1,23 @@
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    info.changeScoreBy(1)
+    info.changeLifeBy(-1)
     otherSprite.setPosition(randint(0, 160), randint(0, 120))
 })
-scene.setBackgroundColor(7)
-let mySprite = sprites.create(img`
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if(controller.dx() == 0 && controller.dy() == 0) return
+
+    shot = sprites.createProjectileFromSprite(img`
+        . . . . . 
+        . . 9 . . 
+        . 9 9 9 . 
+        . . 9 . . 
+        . . . . . 
+        `, p, controller.dx() * 20, controller.dy() * 20)
+})
+let shot: Sprite = null
+let p: Sprite = null
+info.setLife(3)
+scene.setBackgroundColor(0)
+p = sprites.create(img`
     . . . . . . f f f f . . . . . . . . . . . . . . 
     . . . . f f f 2 2 f f f . . . . . . . . . . . . 
     . . . f f f 2 2 2 2 f f f . . . . . . . . . . . 
@@ -29,7 +43,7 @@ let mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
-controller.moveSprite(mySprite)
+controller.moveSprite(p)
 let piza = sprites.create(img`
     . . . . . . b b b b . . . . . . 
     . . . . . . b 4 4 4 b . . . . . 
@@ -48,3 +62,9 @@ let piza = sprites.create(img`
     4 d d d 4 4 4 . . . . . . . . . 
     4 4 4 4 . . . . . . . . . . . . 
     `, SpriteKind.Food)
+piza.setPosition(30, 60)
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Food, function (sprite, otherSprite) {
+    info.changeLifeBy(1)
+    info.changeScoreBy(1)
+    otherSprite.setPosition(randint(0, 160), randint(0, 120))
+})
